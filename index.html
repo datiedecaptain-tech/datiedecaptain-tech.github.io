@@ -1,0 +1,91 @@
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">步进电机自学习中啮合齿在五个状态下的位置与变形示意，可切换状态查看齿隙开合与档点变形。</h2>
+<style>
+svg text{font-family:var(--font-sans)}
+.svt{font-size:12px;fill:var(--color-text-secondary)}
+.svh{font-size:14px;font-weight:500;fill:var(--color-text-primary)}
+#block,#tooth{transition:transform .45s ease}
+#dL,#dR{transition:opacity .3s}
+@media (prefers-reduced-motion:reduce){#block,#tooth{transition:none}}
+.gctrl{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px}
+.gpill{font:inherit;font-size:13px;padding:6px 11px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);border-radius:var(--border-radius-md);cursor:pointer}
+.gpill[aria-current=true]{background:var(--color-text-info);color:#fff;border-color:var(--color-text-info)}
+.gcap{font-size:15px;color:var(--color-text-secondary);line-height:1.6;min-height:70px}
+.gcap strong{color:var(--color-text-primary);font-weight:500;display:block;margin-bottom:4px}
+.gstep{display:inline-block;font-size:12px;padding:2px 9px;border-radius:10px;background:var(--color-background-info);color:var(--color-text-info);margin-bottom:6px}
+.gleg{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--color-text-secondary);align-items:center}
+.gsw{display:inline-block;width:16px;height:10px;border-radius:2px;vertical-align:middle;margin-right:6px}
+</style>
+<div style="padding:0.5rem 0">
+<svg width="100%" viewBox="0 0 680 290" role="img"><title>啮合齿五状态位置示意</title><desc>驱动齿在两侧档点之间相对从动齿移动，标注齿隙开合与档点处齿形变形。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<line x1="76" y1="120" x2="600" y2="120" stroke="var(--color-text-secondary)" stroke-width="0.7" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<text class="svt" x="338" y="112" text-anchor="middle">行程 0 → 1000 步</text>
+
+<rect x="60" y="150" width="16" height="100" fill="#5F5E5A"/>
+<rect x="600" y="150" width="16" height="100" fill="#5F5E5A"/>
+<line x1="60" y1="250" x2="616" y2="250" stroke="var(--color-text-tertiary)" stroke-width="0.7"/>
+<text class="svt" x="68" y="268" text-anchor="middle">0位档点</text>
+<text class="svt" x="616" y="268" text-anchor="end">1000步档点</text>
+
+<g id="block" transform="translate(0 0)">
+<path d="M76 178 L121 178 L137 216 L165 216 L181 178 L226 178 L226 248 L76 248 Z" fill="#1D9E75" stroke="#0A4A3A" stroke-width="0.8"/>
+<polygon points="88,178 95,168 102,178" fill="#1D9E75" stroke="#0A4A3A" stroke-width="0.8"/>
+<polygon points="107,178 114,168 121,178" fill="#1D9E75" stroke="#0A4A3A" stroke-width="0.8"/>
+<polygon points="181,178 188,168 195,178" fill="#1D9E75" stroke="#0A4A3A" stroke-width="0.8"/>
+<polygon points="200,178 207,168 214,178" fill="#1D9E75" stroke="#0A4A3A" stroke-width="0.8"/>
+<text class="svt" x="151" y="236" text-anchor="middle" fill="#04342C">从动齿</text>
+<g id="dL" opacity="1">
+<line x1="121" y1="178" x2="137" y2="216" stroke="#E24B4A" stroke-width="3.5" stroke-linecap="round"/>
+<line x1="111" y1="186" x2="119" y2="189" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+<line x1="109" y1="196" x2="117" y2="198" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+<line x1="111" y1="206" x2="119" y2="208" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+</g>
+<g id="dR" opacity="0">
+<line x1="181" y1="178" x2="165" y2="216" stroke="#E24B4A" stroke-width="3.5" stroke-linecap="round"/>
+<line x1="191" y1="186" x2="183" y2="189" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+<line x1="193" y1="196" x2="185" y2="198" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+<line x1="191" y1="206" x2="183" y2="208" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>
+</g>
+</g>
+
+<g id="tooth" transform="translate(-12 0)">
+<rect x="143" y="132" width="16" height="36" fill="#D85A30"/>
+<path d="M129 168 L173 168 L163 214 L139 214 Z" fill="#D85A30" stroke="#7A2E13" stroke-width="0.8"/>
+<text class="svt" x="151" y="150" text-anchor="middle" fill="#fff">驱动齿</text>
+</g>
+</svg>
+
+<div class="gctrl">
+<button class="gpill" aria-current="true" onclick="gset(0)">① 齿形变形</button>
+<button class="gpill" onclick="gset(1)">② 变形消失</button>
+<button class="gpill" onclick="gset(2)">③ 齿隙消除</button>
+<button class="gpill" onclick="gset(3)">④ 贴上档点</button>
+<button class="gpill" onclick="gset(4)">⑤ 完成变形</button>
+</div>
+<div class="gcap"><span class="gstep" id="gstep">≈ 0 步</span><strong id="gtitle">状态 1 · 齿形变形</strong><p id="gdesc" style="margin:0">抵靠 0 位档点：驱动齿压在从动齿左齿面上并产生塑性变形（红色），电机保持堵转预紧，输出轴位置定义为 0。</p></div>
+<div class="gleg">
+<span><span class="gsw" style="background:#D85A30"></span>驱动齿（电机 / 输出轴侧）</span>
+<span><span class="gsw" style="background:#1D9E75"></span>从动齿（传动零件侧）</span>
+<span><span class="gsw" style="background:#E24B4A"></span>档点处齿形变形</span>
+</div>
+</div>
+<script>
+const GS=[
+{b:0,t:-12,def:'left',step:'≈ 0 步',title:'状态 1 · 齿形变形',desc:'抵靠 0 位档点：驱动齿压在从动齿左齿面上并产生塑性变形（红色），电机保持堵转预紧，输出轴位置定义为 0。'},
+{b:0,t:-8,def:null,step:'≈ x 步',title:'状态 2 · 变形消失',desc:'残余塑/弹性变形回弹消失，但驱动齿左侧仍贴着从动齿左齿面（零间隙、无过盈），尚未越过齿隙，从动齿未动。'},
+{b:0,t:8,def:null,step:'≈ x+y 步',title:'状态 3 · 啮合齿隙消除',desc:'继续进给，驱动齿越过齿隙、改贴到右齿面，背隙归零，此后每一步才真正推动从动齿。'},
+{b:374,t:382,def:null,step:'≈ 1000−Y 步',title:'状态 4 · 从动齿贴上档点',desc:'从动齿随步数移动到位、右端已贴上 1000 步档点（零间隙），齿面受载但接触处尚未变形——准备进入变形。'},
+{b:374,t:386,def:'right',step:'= 1000 步',title:'状态 5 · 完成变形 / 堵转',desc:'从动件已抵住档点不能再动，电机多走的 Y 步全被终端变形吃掉，接触处压缩变形（红色）完成，阻力骤增触发堵转，锁定为 1000 步终点。'}
+];
+function gset(i){var s=GS[i];
+document.getElementById('block').setAttribute('transform','translate('+s.b+' 0)');
+document.getElementById('tooth').setAttribute('transform','translate('+s.t+' 0)');
+document.getElementById('dL').setAttribute('opacity',s.def==='left'?1:0);
+document.getElementById('dR').setAttribute('opacity',s.def==='right'?1:0);
+document.getElementById('gstep').textContent=s.step;
+document.getElementById('gtitle').textContent=s.title;
+document.getElementById('gdesc').textContent=s.desc;
+var ps=document.querySelectorAll('.gpill');for(var j=0;j<ps.length;j++)ps[j].setAttribute('aria-current',j===i?'true':'false');}
+gset(0);
+</script>
